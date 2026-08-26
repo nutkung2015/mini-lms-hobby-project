@@ -32,9 +32,13 @@ const completedCount = props.enrollments.data?.filter(e => e.status === 'complet
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
             <!-- Stats Counters -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <!-- Total Enrolled -->
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-black">
-                        {{ $t('common.all') }}
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                        <!-- Book Open Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
                     </div>
                     <div>
                         <p class="text-xs text-slate-400 font-semibold">{{ $t('dashboard.enrolled_courses') }}</p>
@@ -42,19 +46,28 @@ const completedCount = props.enrollments.data?.filter(e => e.status === 'complet
                     </div>
                 </div>
 
+                <!-- In Progress -->
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-black">
-                        {{ $t('dashboard.active_status') }}
+                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-500 flex items-center justify-center flex-shrink-0">
+                        <!-- Play Circle Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                     <div>
                         <p class="text-xs text-slate-400 font-semibold">{{ $t('dashboard.in_progress') }}</p>
-                        <p class="text-2xl font-black text-amber-600">{{ activeCount }}</p>
+                        <p class="text-2xl font-black text-amber-500">{{ activeCount }}</p>
                     </div>
                 </div>
 
+                <!-- Completed -->
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-black">
-                        {{ $t('dashboard.completed_status') }}
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                        <!-- Check Circle Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                     <div>
                         <p class="text-xs text-slate-400 font-semibold">{{ $t('dashboard.completed') }}</p>
@@ -62,6 +75,7 @@ const completedCount = props.enrollments.data?.filter(e => e.status === 'complet
                     </div>
                 </div>
             </div>
+
 
             <!-- Enrolled Courses List -->
             <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-8 space-y-6">

@@ -97,7 +97,7 @@ const formatDuration = (seconds) => {
                     <div class="relative h-44 rounded-2xl bg-gradient-to-tr from-indigo-800 to-violet-600 flex items-center justify-center overflow-hidden">
                         <img
                             v-if="course.cover_image"
-                            :src="'/storage/' + course.cover_image"
+                            :src="course.cover_image?.startsWith('http') ? course.cover_image : '/storage/' + course.cover_image"
                             :alt="course.title"
                             class="w-full h-full object-cover"
                         />
