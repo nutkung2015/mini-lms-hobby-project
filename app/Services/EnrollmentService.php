@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\CourseStatus;
+use App\Enums\EnrollmentStatus;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\User;
@@ -22,14 +24,14 @@ class EnrollmentService
     public function enroll(User $student, Course $course): Enrollment
     {
         // 1. Course must be published
-        if ($course->status !== 'published') {
+        if ($course->status !== CourseStatus::Published) {
             throw new \RuntimeException('ไม่สามารถลงทะเบียนคอร์สที่ไม่ได้เปิดรับสมัครได้');
         }
 
         // 2. No duplicate enrollment
         $existing = Enrollment::where('user_id', $student->id)
             ->where('course_id', $course->id)
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->first();
 
         if ($existing) {
@@ -39,7 +41,7 @@ class EnrollmentService
         // 3. Check max_students
         if ($course->max_students !== null) {
             $count = Enrollment::where('course_id', $course->id)
-                ->whereNotIn('status', ['cancelled'])
+                ->whereNotIn('status', [EnrollmentStatus::Cancelled])
                 ->count();
 
             if ($count >= $course->max_students) {
@@ -50,7 +52,7 @@ class EnrollmentService
         return Enrollment::create([
             'user_id'     => $student->id,
             'course_id'   => $course->id,
-            'status'      => 'active',
+            'status'      => EnrollmentStatus::Active,
             'enrolled_at' => now(),
         ]);
     }
@@ -61,7 +63,7 @@ class EnrollmentService
     public function cancel(Enrollment $enrollment): void
     {
         DB::transaction(function () use ($enrollment) {
-            $enrollment->update(['status' => 'cancelled']);
+            $enrollment->update(['status' => EnrollmentStatus::Cancelled]);
             $enrollment->delete();
         });
     }

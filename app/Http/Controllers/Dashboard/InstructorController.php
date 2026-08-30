@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\CourseStatus;
+use App\Enums\EnrollmentStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,12 +25,12 @@ class InstructorController extends Controller
 
         $totalStudents = $user->coursesAsInstructor()
             ->join('enrollments', 'courses.id', '=', 'enrollments.course_id')
-            ->whereNotIn('enrollments.status', ['cancelled'])
+            ->whereNotIn('enrollments.status', [EnrollmentStatus::Cancelled])
             ->distinct('enrollments.user_id')
             ->count('enrollments.user_id');
 
         $totalCourses = $user->coursesAsInstructor()->count();
-        $publishedCourses = $user->coursesAsInstructor()->where('status', 'published')->count();
+        $publishedCourses = $user->coursesAsInstructor()->where('status', CourseStatus::Published)->count();
 
         return Inertia::render('Dashboard/Instructor', [
             'courses' => $courses,

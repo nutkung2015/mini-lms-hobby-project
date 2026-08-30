@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\EnrollmentStatus;
 use App\Http\Controllers\Controller;
 use App\Services\LessonProgressService;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class StudentController extends Controller
         $user = $request->user();
 
         $enrollments = $user->enrollments()
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->with([
                 'course.instructor:id,name,avatar',
                 'course.category:id,name,slug',

@@ -23,7 +23,7 @@ class StoreLessonRequest extends FormRequest
     {
         return [
             'title'            => ['required', 'string', 'max:255'],
-            'video_url'        => ['required', 'string', 'max:255'],
+            'video_url'        => ['required', 'url', 'max:255'],
             'duration_seconds' => ['required', 'integer', 'min:1'],
             'order'            => ['required', 'integer', 'min:1'],
         ];

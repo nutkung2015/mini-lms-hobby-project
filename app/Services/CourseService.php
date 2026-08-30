@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CourseStatus;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -16,7 +17,7 @@ class CourseService
     {
         $data['instructor_id'] = $instructor->id;
         $data['slug']          = $this->generateSlug($data['title']);
-        $data['status']        = 'draft';
+        $data['status']        = CourseStatus::Draft;
 
         if ($coverImage) {
             $data['cover_image'] = $coverImage->store('courses/covers', 'public');
@@ -48,7 +49,7 @@ class CourseService
      */
     public function publish(Course $course): Course
     {
-        $course->update(['status' => 'published']);
+        $course->update(['status' => CourseStatus::Published]);
 
         return $course;
     }
@@ -58,7 +59,7 @@ class CourseService
      */
     public function archive(Course $course): Course
     {
-        $course->update(['status' => 'archived']);
+        $course->update(['status' => CourseStatus::Archived]);
 
         return $course;
     }

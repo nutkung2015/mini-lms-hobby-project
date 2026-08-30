@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\EnrollmentStatus;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\LessonProgress;
@@ -82,7 +83,7 @@ class LessonProgressService
      */
     private function checkAndCompleteEnrollment(Enrollment $enrollment): void
     {
-        if ($enrollment->status === 'completed') {
+        if ($enrollment->status === EnrollmentStatus::Completed) {
             return;
         }
 
@@ -98,7 +99,7 @@ class LessonProgressService
 
         if ($completedLessons >= $totalLessons) {
             $enrollment->update([
-                'status'       => 'completed',
+                'status'       => EnrollmentStatus::Completed,
                 'completed_at' => now(),
             ]);
 

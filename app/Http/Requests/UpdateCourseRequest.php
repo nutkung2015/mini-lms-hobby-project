@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\CourseStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCourseRequest extends FormRequest
 {
@@ -25,8 +27,12 @@ class UpdateCourseRequest extends FormRequest
             'description'  => ['sometimes', 'string'],
             'price'        => ['sometimes', 'numeric', 'min:0'],
             'max_students' => ['sometimes', 'nullable', 'integer', 'min:1'],
-            'cover_image'  => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'status'       => ['sometimes', 'in:draft,published,archived'],
+            'cover_image'  => [
+                'sometimes', 'nullable', 'image',
+                'mimes:' . config('uploads.cover_image.allowed_mimes'),
+                'max:' . config('uploads.cover_image.max_size_kb'),
+            ],
+            'status'       => ['sometimes', Rule::in(CourseStatus::cases())],
         ];
     }
 }

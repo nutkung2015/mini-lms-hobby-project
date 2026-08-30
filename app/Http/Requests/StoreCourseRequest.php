@@ -25,7 +25,11 @@ class StoreCourseRequest extends FormRequest
             'description'  => ['required', 'string'],
             'price'        => ['required', 'numeric', 'min:0'],
             'max_students' => ['nullable', 'integer', 'min:1'],
-            'cover_image'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'cover_image'  => [
+                'nullable', 'image',
+                'mimes:' . config('uploads.cover_image.allowed_mimes'),
+                'max:' . config('uploads.cover_image.max_size_kb'),
+            ],
         ];
     }
 }

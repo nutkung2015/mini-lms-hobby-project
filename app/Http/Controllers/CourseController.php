@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EnrollmentStatus;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Category;
@@ -68,7 +69,7 @@ class CourseController extends Controller
         if ($user = auth()->user()) {
             $enrollment = $user->enrollments()
                 ->where('course_id', $course->id)
-                ->whereNotIn('status', ['cancelled'])
+                ->whereNotIn('status', [EnrollmentStatus::Cancelled])
                 ->with('progress')
                 ->first();
 
