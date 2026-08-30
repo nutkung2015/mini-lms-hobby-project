@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\EnrollmentStatus;
 use App\Models\Course;
 use App\Models\Review;
 use App\Models\User;
@@ -23,7 +24,7 @@ class ReviewPolicy
         // 2. Must have an enrollment
         $enrollment = $user->enrollments()
             ->where('course_id', $course->id)
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->first();
 
         if (! $enrollment) {
@@ -31,7 +32,7 @@ class ReviewPolicy
         }
 
         // 3. Must have completed all lessons
-        if ($enrollment->status !== 'completed') {
+        if ($enrollment->status !== EnrollmentStatus::Completed) {
             return Response::deny('คุณยังเรียนไม่จบหลักสูตร สามารถส่งรีวิวได้หลังจากดูบทเรียนครบทุกบทแล้วเท่านั้น (ความคืบหน้า 100%)');
         }
 

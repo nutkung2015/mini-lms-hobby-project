@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EnrollmentStatus;
 use App\Http\Requests\UpdateProgressRequest;
 use App\Models\Enrollment;
 use App\Models\Lesson;
@@ -25,7 +26,7 @@ class ProgressController extends Controller
         // ค้นหาการลงทะเบียนที่ยังใช้งานอยู่สำหรับคอร์สนี้
         $enrollment = Enrollment::where('user_id', $user->id)
             ->where('course_id', $lesson->course_id)
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->firstOrFail();
 
         $progress = $this->progressService->updateProgress(

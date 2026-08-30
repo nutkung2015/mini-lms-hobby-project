@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EnrollmentStatus;
 use App\Http\Requests\StoreLessonRequest;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -19,7 +20,7 @@ class LessonController extends Controller
         $user       = auth()->user();
         $enrollment = $user?->enrollments()
             ->where('course_id', $course->id)
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->first();
 
         // อนุญาตให้ผู้สอน/แอดมินดูพรีวิวได้แม้ยกเลิกหรือยังไม่ได้ลงทะเบียน
@@ -66,7 +67,7 @@ class LessonController extends Controller
 
         $validated = $request->validate([
             'title'            => ['sometimes', 'string', 'max:255'],
-            'video_url'        => ['sometimes', 'string', 'max:255'],
+            'video_url'        => ['sometimes', 'url', 'max:255'],
             'duration_seconds' => ['sometimes', 'integer', 'min:1'],
             'order'            => ['sometimes', 'integer', 'min:1'],
         ]);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\CourseStatus;
+use App\Enums\EnrollmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
@@ -19,19 +21,19 @@ class DashboardController extends Controller
             'total_instructors'     => User::where('role', 'instructor')->count(),
             'total_students'        => User::where('role', 'student')->count(),
             'total_courses'         => Course::count(),
-            'published_courses'     => Course::where('status', 'published')->count(),
-            'total_enrollments'     => Enrollment::whereNotIn('status', ['cancelled'])->count(),
-            'completed_enrollments' => Enrollment::where('status', 'completed')->count(),
+            'published_courses'     => Course::where('status', CourseStatus::Published)->count(),
+            'total_enrollments'     => Enrollment::whereNotIn('status', [EnrollmentStatus::Cancelled])->count(),
+            'completed_enrollments' => Enrollment::where('status', EnrollmentStatus::Completed)->count(),
         ];
 
         $recentEnrollments = Enrollment::with(['user:id,name,email', 'course:id,title,slug'])
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->latest()
             ->limit(8)
             ->get();
 
         $topCourses = Course::with(['instructor:id,name', 'category:id,name'])
-            ->withCount(['enrollments' => fn ($q) => $q->whereNotIn('status', ['cancelled'])])
+            ->withCount(['enrollments' => fn ($q) => $q->whereNotIn('status', [EnrollmentStatus::Cancelled])])
             ->withAvg('reviews', 'rating')
             ->orderByDesc('enrollments_count')
             ->limit(5)

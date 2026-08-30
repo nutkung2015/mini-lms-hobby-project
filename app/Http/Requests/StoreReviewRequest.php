@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Review;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReviewRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreReviewRequest extends FormRequest
     {
         $course = $this->route('course');
 
-        return $this->user()->can('create', [\App\Models\Review::class, $course]);
+        return $this->user()->can('create', [Review::class, $course]);
     }
 
     /**
@@ -22,7 +23,7 @@ class StoreReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rating'  => ['required', 'integer', 'min:1', 'max:5'],
+            'rating'  => ['required', 'integer', 'min:1', 'max:' . Review::MAX_RATING],
             'comment' => ['nullable', 'string', 'max:2000'],
         ];
     }

@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\CourseStatus;
+use App\Enums\EnrollmentStatus;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\User;
@@ -22,14 +24,14 @@ class EnrollmentPolicy
         }
 
         // Course must be published
-        if ($course->status !== 'published') {
+        if ($course->status !== CourseStatus::Published) {
             return false;
         }
 
         // Must not already be enrolled (non-cancelled)
         $alreadyEnrolled = Enrollment::where('user_id', $user->id)
             ->where('course_id', $course->id)
-            ->whereNotIn('status', ['cancelled'])
+            ->whereNotIn('status', [EnrollmentStatus::Cancelled])
             ->withTrashed()
             ->exists();
 

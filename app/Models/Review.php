@@ -10,6 +10,9 @@ class Review extends Model
 {
     use HasFactory;
 
+    /** คะแนนรีวิวสูงสุดที่ให้ได้ */
+    public const MAX_RATING = 5;
+
     protected $fillable = [
         'user_id',
         'course_id',

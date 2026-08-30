@@ -12,6 +12,8 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+    /** จำนวนครั้งสูงสุดที่อนุญาตให้ลองเข้าสู่ระบบก่อนจะถูก Rate Limit */
+    private const MAX_ATTEMPTS = 5;
     /**
      * ตรวจสอบว่าผู้ใช้มีสิทธิ์ส่งคำขอนี้หรือไม่
      */
@@ -60,7 +62,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
             return;
         }
 

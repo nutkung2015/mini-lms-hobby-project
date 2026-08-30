@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\CourseStatus;
 use App\Models\Course;
 use App\Models\User;
 
@@ -21,7 +22,7 @@ class CoursePolicy
      */
     public function view(?User $user, Course $course): bool
     {
-        if ($course->status === 'published') {
+        if ($course->status === CourseStatus::Published) {
             return true;
         }
 

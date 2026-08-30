@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,8 +28,9 @@ class Course extends Model
     protected function casts(): array
     {
         return [
-            'price' => 'decimal:2',
+            'price'        => 'decimal:2',
             'max_students' => 'integer',
+            'status'       => CourseStatus::class,
         ];
     }
 
@@ -73,6 +75,6 @@ class Course extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('status', 'published');
+        return $query->where('status', CourseStatus::Published);
     }
 }
